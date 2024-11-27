@@ -7,11 +7,8 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const compression = require("compression");
 const {createInstitute, getInstitutes} = require("./institute.controller");
-// const globalErrorHandler = require('./middleware/globalErrorHandler');
-// const mainRoutes = require('./route');
-// const ApiError = require('./utils/apiError');
-// const { STATUS_CODES } = require('./utils/constants');
 const { Router } = require("express");
+const instituteRoutes = require('./routes/instituteRoutes');
 
 const app = express();
 
@@ -51,6 +48,8 @@ app.use(mongoSanitize());
 app.use(xss());
 app.use(compression());
 console.log(createInstitute);
+
+app.use('/api/v1', instituteRoutes);
 
 app.post("/createInstitute", createInstitute);
 app.get('/institutes', getInstitutes);

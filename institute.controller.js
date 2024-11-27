@@ -17,7 +17,7 @@ const createInstitute = async (req, res) => {
     } = req.body;
     const error = instituteValidationSchema.validate(req.body);
     console.log(error);
-    
+
     if (error.error) {
       return res.status(400).json({ message: error.error.details[0].message });
     }
@@ -60,32 +60,39 @@ const createInstitute = async (req, res) => {
 };
 const getInstitutes = async (req, res) => {
   try {
-      // Extract query parameters for filtering
-      const { type, board, medium, class: classCategory, standard, subjects } = req.query;
+    // Extract query parameters for filtering
+    const {
+      type,
+      board,
+      medium,
+      class: classCategory,
+      standard,
+      subjects,
+    } = req.query;
 
-      // Build a filter object based on query parameters
-      const filter = {};
-      if (type) filter.type = type;
-      if (board) filter.board = board;
-      if (medium) filter.medium = medium;
-      if (classCategory) filter.class = classCategory;
-      if (standard) filter.standard = standard;
-      if (subjects) filter.subjects = { $in: subjects.split(",") }; // Handles comma-separated subjects
+    // Build a filter object based on query parameters
+    const filter = {};
+    if (type) filter.type = type;
+    if (board) filter.board = board;
+    if (medium) filter.medium = medium;
+    if (classCategory) filter.class = classCategory;
+    if (standard) filter.standard = standard;
+    if (subjects) filter.subjects = { $in: subjects.split(",") }; // Handles comma-separated subjects
 
-      // Fetch institutes from the database based on the filter
-      const institutes = await Institute.find(filter);
+    // Fetch institutes from the database based on the filter
+    const institutes = await Institute.find(filter);
 
-      // Respond with the list of institutes
-      res.status(200).json({
-          message: "Institutes retrieved successfully",
-          data: institutes
-      });
+    // Respond with the list of institutes
+    res.status(200).json({
+      message: "Institutes retrieved successfully",
+      data: institutes,
+    });
   } catch (error) {
-      console.error("Error fetching institutes:", error);
-      res.status(500).json({
-          message: "An error occurred while fetching institutes",
-          error: error.message
-      });
+    console.error("Error fetching institutes:", error);
+    res.status(500).json({
+      message: "An error occurred while fetching institutes",
+      error: error.message,
+    });
   }
 };
 
