@@ -16,6 +16,8 @@ const { Router } = require("express");
 const app = express();
 
 const router = Router();
+console.log("done");
+
 
 app.use(
   cors({
